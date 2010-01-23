@@ -16,6 +16,7 @@ __PACKAGE__->mk_accessors(qw[
     requires
     recommends
     build_requires
+    configure_requires
     conflicts
     requires_build_tools
     requires_packages
@@ -30,6 +31,7 @@ __PACKAGE__->mk_accessors(qw[
     auto_regenrate
     provides
     resources
+    static_dir
 ]);
 
 sub new {
@@ -40,7 +42,7 @@ sub new {
         $k = 'keywords' if $k eq 'tags';
         if ( $k eq 'meta-spec' ) {
             $self->meta_spec(Module::META::MetaSpec->new(%{$v}));
-        } elsif ( ref($v) eq 'HASH' && grep {$k eq $_} qw[requires recommends build_requires conflicts provides] ) {
+        } elsif ( ref($v) eq 'HASH' && grep {$k eq $_} qw[requires recommends build_requires configure_requires conflicts provides] ) {
             $self->$k([
                 map Module::META::Requires->new(%{$_}),
                 map {{
